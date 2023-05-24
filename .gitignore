@@ -51,3 +51,4 @@ app.*.map.json
 .metadata
 pubspec.lock
 .gitattributes
+custom_lint.log
