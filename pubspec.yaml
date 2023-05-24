@@ -1,0 +1,51 @@
+name: manga_easy_reading_history
+description: A new Flutter module project.
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.1 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  #paackge Manga Easy
+  manga_easy_sdk:
+    git:
+      url: https://github.com/manga-easy/manga_easy_sdk.git
+      ref: v1.3.0
+  manga_easy_routes:
+    git:
+      url: https://github.com/manga-easy/manga_easy_routes.git
+      ref: v1.0.2
+  client_driver:
+    git:
+      url: https://github.com/manga-easy/manga_easy_client_driver.git
+      ref: v1.1.2
+  manga_easy_themes:
+    git: 
+      url: https://github.com/manga-easy/manga_easy_themes.git
+      ref: 1.0.2
+  coffee_cup:
+    git:
+      url: https://github.com/manga-easy/manga_easy_coffee_cup.git
+      ref: v1.1.0
+  # outros packages
+  get_it: ^7.6.0
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.1
+  custom_lint: 0.4.0
+  manga_easy_lint_rules:
+    git:
+      url: https://github.com/manga-easy/manga_easy_lint_rules.git
+      ref: v1.0.1
+
+
+flutter:
+  uses-material-design: true
+
+
