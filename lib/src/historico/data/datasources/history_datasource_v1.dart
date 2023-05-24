@@ -1,12 +1,14 @@
 import 'package:client_driver/client_driver.dart';
-import 'package:manga_easy_reading_history/src/historico/data/datasources/historic_datasource.dart';
-import 'package:manga_easy_reading_history/src/historico/domain/models/historic_filter.dart';
+import 'package:manga_easy_reading_history/core/app_url.dart';
+import 'package:manga_easy_reading_history/core/auth/jwt_auth.dart';
+import 'package:manga_easy_reading_history/src/historico/data/datasources/history_datasource.dart';
+import 'package:manga_easy_reading_history/src/historico/domain/models/history_filter.dart';
 
-class HistoricDatasorceV1 extends HistoricDatasorce {
+class HistoryDatasourceV1 extends HistoryDatasource {
   final ClientRequest http;
-  final GetJWTAuthCase getJWTAuthCase;
+  final JWTAuth jwtAuth;
 
-  HistoricDatasorceV1(this.http, this.getJWTAuthCase);
+  HistoryDatasourceV1(this.http, this.jwtAuth);
 
   @override
   final String host = AppUrl.userConfig;
@@ -14,7 +16,7 @@ class HistoricDatasorceV1 extends HistoricDatasorce {
   final String version = 'v1';
 
   @override
-  Future<List<Map<String, dynamic>>> list(HistoricFilter where) async {
+  Future<List<Map<String, dynamic>>> list(HistoryFilter where) async {
     var param = '';
 
     if (where.uniqueid.isNotEmpty) {
@@ -28,7 +30,7 @@ class HistoricDatasorceV1 extends HistoricDatasorce {
     param += 'limit=${where.limit}&';
     param += 'offset=${where.offset}&';
     final headers = {
-      'me-jwt-token': await getJWTAuthCase(),
+      'me-jwt-token': await jwtAuth.getJWTToken(),
     };
     var ret = await http.get(
       path: '$host/$version/historic?$param',
@@ -41,7 +43,7 @@ class HistoricDatasorceV1 extends HistoricDatasorce {
   @override
   Future<void> delete(String uniqueid) async {
     final headers = {
-      'me-jwt-token': await getJWTAuthCase(),
+      'me-jwt-token': await jwtAuth.getJWTToken(),
     };
     var ret = await http.delete(
       path: '$host/$version/historic?uniqueid=$uniqueid',
@@ -53,7 +55,7 @@ class HistoricDatasorceV1 extends HistoricDatasorce {
   @override
   Future<void> update(Map<String, dynamic> body) async {
     final headers = {
-      'me-jwt-token': await getJWTAuthCase(),
+      'me-jwt-token': await jwtAuth.getJWTToken(),
     };
     var ret = await http.put(
       path: '$host/$version/historic',

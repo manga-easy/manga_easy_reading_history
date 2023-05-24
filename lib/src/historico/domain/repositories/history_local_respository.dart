@@ -1,13 +1,13 @@
 import 'package:flutter/foundation.dart';
-import 'package:manga_easy_reading_history/src/historico/domain/models/historic_filter.dart';
+import 'package:manga_easy_reading_history/src/historico/domain/models/history_filter.dart';
 import 'package:manga_easy_sdk/manga_easy_sdk.dart';
 
-abstract class HistoricRepositoryLocal {
+abstract class HistoryRepositoryLocal {
   final BlockedComicCase blockedComicCase;
 
   final ILocalDatabase db;
 
-  HistoricRepositoryLocal(this.db, this.blockedComicCase);
+  HistoryRepositoryLocal(this.db, this.blockedComicCase);
 
   Historico? get({required String id});
 
@@ -19,15 +19,15 @@ abstract class HistoricRepositoryLocal {
 
   Future<void> delete({required String id});
 
-  Future<List<Historico>> list({HistoricFilter where});
+  Future<List<Historico>> list({HistoryFilter where});
 
   Future<void> deleteAll();
 }
 
-class HistoricRepositoryHive extends HistoricRepositoryLocal {
+class HistoryRepositoryHive extends HistoryRepositoryLocal {
   String table = 'boxHistorico';
 
-  HistoricRepositoryHive(super.db, super.blockedComicCase);
+  HistoryRepositoryHive(super.db, super.blockedComicCase);
 
   @override
   Historico? get({required String id}) {
@@ -38,10 +38,11 @@ class HistoricRepositoryHive extends HistoricRepositoryLocal {
   }
 
   @override
-  Future<void> put(
-      {required Historico objeto,
-      required String id,
-      bool isUpdate = true}) async {
+  Future<void> put({
+    required Historico objeto,
+    required String id,
+    bool isUpdate = true,
+  }) async {
     if (isUpdate) {
       objeto.isSync = false;
       objeto.updatedAt = DateTime.now().millisecondsSinceEpoch;
@@ -60,7 +61,7 @@ class HistoricRepositoryHive extends HistoricRepositoryLocal {
   }
 
   @override
-  Future<List<Historico>> list({HistoricFilter? where}) async {
+  Future<List<Historico>> list({HistoryFilter? where}) async {
     try {
       var list = db.list(table: table);
       return await compute(filter, {
@@ -77,7 +78,7 @@ class HistoricRepositoryHive extends HistoricRepositoryLocal {
   }
 
   static List<Historico> filter(dynamic map) {
-    HistoricFilter? where = map['where'];
+    HistoryFilter? where = map['where'];
     BlockedComicCase blockedComicCase = map['blockedComicCase'];
     List<Historico> list = map['dados']
         .map<Historico>((e) => Historico.fromJson(Map.from(e)))

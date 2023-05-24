@@ -1,3 +1,3 @@
 library manga_easy_reading_history;
 
-export 'src/microapp/historico_module.dart';
+export 'src/microapp/reading_reading_microapp.dart';

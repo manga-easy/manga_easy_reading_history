@@ -1,4 +1,4 @@
-class HistoricFilter {
+class HistoryFilter {
   final bool ordenar;
   final bool filterIsContinue;
   final bool orderUpdate;
@@ -6,7 +6,7 @@ class HistoricFilter {
   final int limit;
   final int offset;
 
-  HistoricFilter({
+  HistoryFilter({
     this.ordenar = false,
     this.filterIsContinue = false,
     this.orderUpdate = false,

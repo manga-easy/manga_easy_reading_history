@@ -1,4 +1,4 @@
-abstract class SyncHistoricCase {
+abstract class SyncHistoryCase {
   Future<void> call({
     bool isLogin = false,
   });

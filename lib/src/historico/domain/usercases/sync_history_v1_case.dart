@@ -1,15 +1,15 @@
-import 'package:manga_easy_reading_history/src/historico/domain/models/historic_filter.dart';
-import 'package:manga_easy_reading_history/src/historico/domain/repositories/historico_repo.dart';
-import 'package:manga_easy_reading_history/src/historico/domain/repositories/library_repository_remote.dart';
-import 'package:manga_easy_reading_history/src/historico/domain/usercases/sync_historic_case.dart';
+import 'package:manga_easy_reading_history/src/historico/domain/models/history_filter.dart';
+import 'package:manga_easy_reading_history/src/historico/domain/repositories/history_local_respository.dart';
+import 'package:manga_easy_reading_history/src/historico/domain/repositories/history_repository.dart';
+import 'package:manga_easy_reading_history/src/historico/domain/usercases/sync_history_case.dart';
 import 'package:manga_easy_sdk/manga_easy_sdk.dart';
 
-class SyncHistoricV1Case extends SyncHistoricCase {
-  final HistoricRepositoryRemote historicRepositoryRemote;
+class SyncHistoryV1Case extends SyncHistoryCase {
+  final HistoryRepositoryRemote historicRepositoryRemote;
   final MangaRepo mangaRepo;
-  final HistoricRepositoryLocal historicoRepo;
+  final HistoryRepositoryLocal historicoRepo;
 
-  SyncHistoricV1Case(
+  SyncHistoryV1Case(
     this.historicRepositoryRemote,
     this.mangaRepo,
     this.historicoRepo,
@@ -25,7 +25,7 @@ class SyncHistoricV1Case extends SyncHistoricCase {
       if (ret.isEmpty || isLogin) {
         for (var i = 0; i < 30000; i++) {
           var favos = await historicRepositoryRemote.list(
-            where: HistoricFilter(
+            where: HistoryFilter(
               limit: 400,
               offset: 400 * i,
             ),
@@ -55,7 +55,7 @@ class SyncHistoricV1Case extends SyncHistoricCase {
         if (!item.isSync) {
           try {
             var remote = await historicRepositoryRemote.list(
-              where: HistoricFilter(
+              where: HistoryFilter(
                 limit: 1,
                 uniqueid: item.uniqueid,
               ),
@@ -68,8 +68,7 @@ class SyncHistoricV1Case extends SyncHistoricCase {
       }
       // carrega os ultimos mangas
       var retL = await historicRepositoryRemote.list(
-        where: HistoricFilter(
-          limit: 100,
+        where: HistoryFilter(
           orderUpdate: true,
         ),
       );
@@ -79,11 +78,13 @@ class SyncHistoricV1Case extends SyncHistoricCase {
         verifyUpdateAt(remote, local);
       }
     } catch (e, s) {
-      await FirebaseCrashlytics.instance.recordFlutterError(FlutterErrorDetails(
-        exception: e,
-        stack: s,
-        library: 'SincronizaHistoricoCase',
-      ));
+      await FirebaseCrashlytics.instance.recordFlutterError(
+        FlutterErrorDetails(
+          exception: e,
+          stack: s,
+          library: 'SincronizaHistoricoCase',
+        ),
+      );
       Helps.log(e);
     }
   }
@@ -137,6 +138,7 @@ class SyncHistoricV1Case extends SyncHistoricCase {
     }
   }
 
+  // verifica se ja passou 30 dias
   bool verify30Days(int update) {
     var trintaDias = 2592000000;
     var agora = DateTime.now().millisecondsSinceEpoch;

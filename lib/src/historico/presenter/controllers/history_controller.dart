@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:manga_easy_reading_history/src/historico/domain/repositories/historico_repo.dart';
+import 'package:manga_easy_reading_history/src/historico/domain/repositories/history_local_respository.dart';
 import 'package:manga_easy_sdk/manga_easy_sdk.dart';
 
-class HistoricoController extends IController {
-  final HistoricRepositoryLocal historicoRepo;
+class HistoryController extends IController {
+  final HistoryRepositoryLocal historicoRepo;
   final MangaRepo mangaRepo;
 
-  HistoricoController({
+  HistoryController({
     required this.historicoRepo,
     required this.mangaRepo,
   });
